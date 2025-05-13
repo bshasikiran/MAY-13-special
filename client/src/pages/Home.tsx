@@ -59,7 +59,7 @@ export default function Home() {
     document.head.appendChild(favicon);
 
     // Set the title
-    document.title = "Khayaal - Romantic Lyrics Visualization";
+    document.title = "Romantic Lyrics Visualization";
     
     // Handle visibility change to ensure music plays when tab is active
     const handleVisibilityChange = () => {
@@ -89,7 +89,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-2 text-primary text-glow">Khayaal</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-2 text-primary text-glow">For You</h1>
           <p className="text-light-dimmed text-lg md:text-xl font-light">Talwiinder</p>
         </motion.header>
 
