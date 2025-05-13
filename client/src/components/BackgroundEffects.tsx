@@ -11,8 +11,16 @@ interface Particle {
   delay: number;
 }
 
+interface Circle {
+  id: number;
+  size: number;
+  opacity: number;
+  animationDuration: number;
+}
+
 const BackgroundEffects = () => {
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [circles, setCircles] = useState<Circle[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,10 +40,49 @@ const BackgroundEffects = () => {
     }
     
     setParticles(newParticles);
+
+    // Create hypnotic circles
+    const newCircles: Circle[] = [];
+    const totalCircles = 8;
+    
+    for (let i = 0; i < totalCircles; i++) {
+      newCircles.push({
+        id: i,
+        size: 100 - (i * (100 / totalCircles)),
+        opacity: 0.2 + (i * 0.05),
+        animationDuration: 10 + (i * 2)
+      });
+    }
+    
+    setCircles(newCircles);
   }, []);
 
   return (
     <div className="fixed inset-0 overflow-hidden opacity-70 z-0" ref={containerRef}>
+      {/* Hypnotic Circles */}
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+        {circles.map((circle) => (
+          <motion.div
+            key={circle.id}
+            className="absolute rounded-full border-2 border-primary/20"
+            style={{
+              width: `${circle.size}%`,
+              height: `${circle.size}%`,
+              opacity: circle.opacity,
+            }}
+            animate={{
+              scale: [1, 1.05, 1],
+              opacity: [circle.opacity, circle.opacity * 1.5, circle.opacity],
+            }}
+            transition={{
+              duration: circle.animationDuration,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
+      
       {/* Sound Waves */}
       <div className="sound-wave animate-wave opacity-30"></div>
       <div className="sound-wave animate-wave opacity-20" style={{ animationDelay: '2s' }}></div>
@@ -67,14 +114,16 @@ const BackgroundEffects = () => {
         ))}
       </div>
       
-      {/* Background Image Layer */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20" 
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1518818608552-195ed130cda4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=900')",
-          backgroundBlendMode: "soft-light"
-        }}
-      />
+      {/* Add a message like in the image */}
+      <div className="absolute top-20 w-full text-center z-10">
+        <motion.h2 
+          className="text-2xl md:text-3xl text-primary/90 font-serif"
+          animate={{ opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          As it's May 13th, I felt like saying:
+        </motion.h2>
+      </div>
     </div>
   );
 };

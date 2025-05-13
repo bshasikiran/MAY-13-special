@@ -27,10 +27,12 @@ export default function Home() {
   const [duration, setDuration] = useState(30); // Default duration
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading time for initial experience
+  // Simulate loading time for initial experience and auto-start music
   useEffect(() => {
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
+      // Auto-play music when loading is complete
+      setIsPlaying(true);
     }, 2000);
 
     return () => clearTimeout(loadingTimer);
@@ -44,6 +46,8 @@ export default function Home() {
   // Handle audio end
   const handleAudioEnd = () => {
     setCurrentTime(0);
+    // Auto-restart the song when it ends
+    setIsPlaying(true);
   };
 
   // Update favicon dynamically
@@ -56,6 +60,19 @@ export default function Home() {
 
     // Set the title
     document.title = "Khayaal - Romantic Lyrics Visualization";
+    
+    // Handle visibility change to ensure music plays when tab is active
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        setIsPlaying(true);
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   return (
@@ -75,6 +92,34 @@ export default function Home() {
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-2 text-primary text-glow">Khayaal</h1>
           <p className="text-light-dimmed text-lg md:text-xl font-light">Talwiinder</p>
         </motion.header>
+
+        {/* Central May 13 display */}
+        <motion.div
+          className="my-6 relative z-10"
+          animate={{ 
+            scale: [1, 1.05, 1],
+            opacity: [0.8, 1, 0.8]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <div className="text-center">
+            <motion.span 
+              className="inline-block text-5xl sm:text-6xl md:text-7xl font-serif text-secondary/80 font-bold"
+            >
+              may
+            </motion.span>
+            <br />
+            <motion.span 
+              className="inline-block text-4xl sm:text-5xl md:text-6xl font-serif text-secondary/80 font-bold"
+            >
+              13
+            </motion.span>
+          </div>
+        </motion.div>
 
         {/* Lyrics Visualization */}
         <LyricsDisplay 

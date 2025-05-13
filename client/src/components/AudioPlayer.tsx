@@ -144,7 +144,7 @@ const AudioPlayer = ({
 
   return (
     <>
-      <audio ref={audioRef} src={audioSrc} preload="auto" className="hidden" />
+      <audio ref={audioRef} src={audioSrc} preload="auto" autoPlay className="hidden" />
       
       <div className="audio-player fixed bottom-0 left-0 right-0 bg-dark-lighter bg-opacity-70 border-t border-gray-800 px-4 py-3 z-20">
         <div className="mx-auto max-w-4xl">
